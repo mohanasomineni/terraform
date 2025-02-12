@@ -1,9 +1,10 @@
 resource "aws_instance" "this" {
-    ami     = "ami-09c813fb71547fc4f" # # KEY VALUE PAIR & This is our devops-practice AMI ID
+    for_each               = var.instances # terraform will give us a variable called each
+    ami                    = "ami-09c813fb71547fc4f" # # KEY VALUE PAIR & This is our devops-practice AMI ID
     vpc_security_group_ids = [aws_security_group.allow_tls.id]
-    instance_type = "t3.micro"
+    instance_type          = each.value
     tags = {
-        Name    = "terraform-demo"  # KEY VALUE PAIR
+        Name    = each.key  # KEY VALUE PAIR
         Purpose = "terraform-practice"
     }
 }
@@ -29,4 +30,8 @@ resource "aws_security_group" "allow_tls" {
   tags = {
     Name = "allow_tls"
   }
+}
+
+output "ec2_info" {
+  value = aws_instance.this
 }
