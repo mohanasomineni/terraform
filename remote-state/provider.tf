@@ -7,10 +7,12 @@
   }
 
   backend "s3" {
-    bucket = "mohana-remote-state"
+    bucket = "mohana-tf-remote-state"
     key    = "expense-backend-infra" # you should have unique keys within the bucket, same key should not use in other repos or tf projects
     region = "us-east-1"
     dynamodb_table = "mohana-state-locking"
+    encrypt        = true
+    endpoint       = "s3.amazonaws.com"
   }  
 }
 
